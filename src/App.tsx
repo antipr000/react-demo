@@ -1,24 +1,30 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { useSelector } from "react-redux";
+import "./App.css";
+import IceCreamPage from "./IceCreamPage";
+import { updateSentences } from "./redux/action";
+import { AppDispatch, useAppDispatch } from "./redux/store";
+import { State } from "./redux/types";
 
 function App() {
+  const sentences: string[] = useSelector<State, string[]>(
+    (state: State) => state.sentences
+  );
+
+  const dispatch: AppDispatch = useAppDispatch();
+
+  const handleAddSentence = () => {
+    dispatch(updateSentences(["New sentences"]));
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {sentences.map((sentence) => (
+        <p>{sentence}</p>
+      ))}
+
+      <button onClick={handleAddSentence}>Add Sentence</button>
+
+      <IceCreamPage />
     </div>
   );
 }
